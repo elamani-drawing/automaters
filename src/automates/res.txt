@@ -1,0 +1,49 @@
+DFA1 :
+aaab -> KO
+abab -> OK
+-> D'accord
+
+
+DFA2 :
+00011 -> D'accord
+000 -> KO
+
+DFA3 :
+aaa -> KO
+bbababbb -> KO
+b -> D'accord
+
+
+NFA1 :
+abbbb -> KO
+b -> KO
+aabb -> OK
+
+
+NFA2 :
+00001 -> D'accord
+0000000 -> KO
+01 -> K0
+
+
+NFA3 :
+abbaab -> KO
+bbaaaba -> OK
+
+
+
+NFA1e :
+010 -> D'accord
+11 -> OK
+
+
+
+NFA2e :
+-> KO
+0-> KO
+01 -> K0
+
+
+NFA3e :
+01 -> D'accord
+0 -> D'accord

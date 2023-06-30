@@ -1,0 +1,23 @@
+{
+      "states" : ["A","B", "C"],
+      "alphabet" : ["0","1"],
+      "ends" : ["C"],
+      "starts" : ["A"],
+      "delta" : [
+	        {
+	         "state" : "A",
+	         "symbol" : "0",
+	         "images" : ["A", "B"]
+	        },         
+	        {
+	         "state" : "A",
+	         "symbol" : "1",
+	         "images" : ["A"]
+	        }, 
+			{
+	         "state" : "B",
+	         "symbol" : "1",
+	         "images" : ["C"]
+	        }
+      ]
+}

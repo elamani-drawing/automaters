@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, world!");
+    println!("Rust Automate par {}.", "@Au = Or[79]");
 }
