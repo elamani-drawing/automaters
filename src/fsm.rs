@@ -5,13 +5,13 @@ use serde_json::{Value, from_str};
 
 /// Machine à état fini 
 #[derive(Debug, Clone)]
-pub struct FiniteStateMachine {
+pub struct FSM {
     states: BTSet<State>, // set des states de la machine
     alphabet: BTSet<Symbol>,// set de symbole
     ends: BTSet<State>,// set des etats finaux de la machine
 }
 
-impl FiniteStateMachine {
+impl FSM {
     /// Creer une machine à etat fini
     /// 
     /// # Arguments
@@ -48,20 +48,20 @@ impl FiniteStateMachine {
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis un lien
-    ///     let fsm : FiniteStateMachine = FiniteStateMachine::from_json_file(link_file);  
+    ///     let fsm : FSM = FSM::from_json_file(link_file);  
     ///     //creation depuis du json
-    ///     let fsm2 : FiniteStateMachine = FiniteStateMachine::from_json(&content_json);
+    ///     let fsm2 : FSM = FSM::from_json(&content_json);
     ///     //creation depuis new
-    ///     let fsm3 : FiniteStateMachine = FiniteStateMachine::new(fsm.get_states().clone(), fsm.get_alphabet().clone(), fsm.get_ends().clone());  
+    ///     let fsm3 : FSM = FSM::new(fsm.get_states().clone(), fsm.get_alphabet().clone(), fsm.get_ends().clone());  
     /// }
     /// ```
     /// 
     /// # Return
     ///
-    /// * `FiniteStateMachine` - La machine à état fini correspondante
+    /// * `FSM` - La machine à état fini correspondante
     /// 
     pub fn new(_states : BTSet<State>, _alphabet: BTSet<Symbol>, _ends: BTSet<State> ) -> Self {
-        FiniteStateMachine{
+        FSM{
             states : _states,
             alphabet : _alphabet,
             ends: _ends
@@ -102,13 +102,13 @@ impl FiniteStateMachine {
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis du json
-    ///     let fsm : FiniteStateMachine = FiniteStateMachine::from_json(&content_json); 
+    ///     let fsm : FSM = FSM::from_json(&content_json); 
     /// }
     /// ```
     /// 
     /// # Return
     ///
-    /// * `FiniteStateMachine` - La machine à état fini correspondante
+    /// * `FSM` - La machine à état fini correspondante
     /// 
     pub fn from_json(content_json: &Value) -> Self {
         //creation de la machine à l'aide du content_json
@@ -133,7 +133,7 @@ impl FiniteStateMachine {
             ends.insert(state);
         }
 
-        FiniteStateMachine {
+        FSM {
             alphabet : alphabet,
             states : states,
             ends: ends,
@@ -168,13 +168,13 @@ impl FiniteStateMachine {
     /// fn main() {
     ///     let link_file: &str = "src/automates/DFA1.json";
     ///     //creation depuis un lien
-    ///     let fsm : FiniteStateMachine = FiniteStateMachine::from_json_file(link_file);   
+    ///     let fsm : FSM = FSM::from_json_file(link_file);   
     /// }
     /// ```
     /// 
     /// # Return
     ///
-    /// * `FiniteStateMachine` - La machine à état fini correspondante
+    /// * `FSM` - La machine à état fini correspondante
     /// 
     pub fn from_json_file(path: &str) -> Self {
         let content_json: Value = {
@@ -184,7 +184,7 @@ impl FiniteStateMachine {
             from_str::<Value>(&content).unwrap()
         };
         //creation de la machine
-        FiniteStateMachine::from_json(&content_json)
+        FSM::from_json(&content_json)
     }
 
     /// Retourne les états de la machine
@@ -217,11 +217,11 @@ mod test {
             from_str::<Value>(&content).unwrap()
         };
         //creation depuis un lien
-        let fsm : FiniteStateMachine = FiniteStateMachine::from_json_file(link_file);  
+        let fsm : FSM = FSM::from_json_file(link_file);  
         //creation depuis du json
-        let fsm2 : FiniteStateMachine = FiniteStateMachine::from_json(&content_json);
+        let fsm2 : FSM = FSM::from_json(&content_json);
         //creation depuis new
-        let fsm3 : FiniteStateMachine = FiniteStateMachine::new(fsm.get_states().clone(), fsm.get_alphabet().clone(), fsm.get_ends().clone());  
+        let fsm3 : FSM = FSM::new(fsm.get_states().clone(), fsm.get_alphabet().clone(), fsm.get_ends().clone());  
         
         assert_eq!(fsm.get_states(), fsm2.get_states());
         assert_eq!(fsm.get_ends(), fsm2.get_ends());

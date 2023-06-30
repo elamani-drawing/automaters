@@ -1,19 +1,19 @@
-use crate::{NonDeterministicFiniteAutomaton, AutomateTrait, AutomateJsonIO};
+use crate::{NDFA, AutomateTrait, AutomateJsonIO};
 
-use super::{Transition, State,Symbol, FiniteStateMachine, BTSet};
+use super::{Transition, State,Symbol, FSM, BTSet};
 use std::collections::{HashMap};
 use std::fs;
 use serde_json::{Value, from_str};
 
 /// Automate a état fini déterministe
 #[derive(Debug, Clone)]
-pub struct DeterministicFiniteAutomaton {
+pub struct DFA {
     start: State,
     delta: HashMap<Transition<State>, State>,
-    fsm: FiniteStateMachine, 
+    fsm: FSM, 
 }
 
-impl DeterministicFiniteAutomaton {    
+impl DFA {    
     /// Créer un automate a état fini déterministe
     /// 
     /// # Arguments
@@ -64,22 +64,22 @@ impl DeterministicFiniteAutomaton {
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis un lien
-    ///     let dfa : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::from_json_file(link_file);  
+    ///     let dfa : DFA = DFA::from_json_file(link_file);  
     ///     //creation depuis du json
-    ///     let dfa2 : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::from_json(&content_json);
-    ///     let fsm: FiniteStateMachine = FiniteStateMachine::from_json(&content_json);
+    ///     let dfa2 : DFA = DFA::from_json(&content_json);
+    ///     let fsm: FSM = FSM::from_json(&content_json);
     ///     //creation depuis new
-    ///     let dfa3 : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::new(dfa.get_start().clone(), dfa.get_delta().clone(), fsm.clone());  
+    ///     let dfa3 : DFA = DFA::new(dfa.get_start().clone(), dfa.get_delta().clone(), fsm.clone());  
     /// 
     /// }
     /// ```
     /// 
     /// # Return
     ///
-    /// * `DeterministicFiniteAutomaton` - L'automate déterministe à état fini correspondante
+    /// * `DFA` - L'automate déterministe à état fini correspondante
     /// 
-    pub fn new(_start : State, _delta : HashMap<Transition<State>, State>, _fsm : FiniteStateMachine) -> Self {
-        DeterministicFiniteAutomaton{
+    pub fn new(_start : State, _delta : HashMap<Transition<State>, State>, _fsm : FSM) -> Self {
+        DFA{
             start : _start,
             delta : _delta,
             fsm: _fsm
@@ -105,16 +105,16 @@ impl DeterministicFiniteAutomaton {
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis un lien
-    ///     let dfa : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::from_json_file(link_file);  
-    ///     let nfa : NonDeterministicFiniteAutomaton = dfa.to_transpose();
+    ///     let dfa : DFA = DFA::from_json_file(link_file);  
+    ///     let nfa : NDFA = dfa.to_transpose();
     /// }
     /// ```
     /// 
     /// # Return
     ///
-    /// * `NonDeterministicFiniteAutomaton` - Un NonDeterministicFiniteAutomaton correspondant a la transposition de self
+    /// * `NDFA` - Un NDFA correspondant a la transposition de self
     /// 
-    pub fn  to_transpose(&self) -> NonDeterministicFiniteAutomaton {
+    pub fn  to_transpose(&self) -> NDFA {
         let mut _delta: HashMap<Transition<State>, BTSet<State>> = HashMap::new();
         let mut _set : BTSet<State>;
         let mut _transition : Transition<State>;
@@ -138,8 +138,8 @@ impl DeterministicFiniteAutomaton {
         _ends.insert(self.get_start().clone());
         _starts = self.get_ends().clone();
         // creation du nouvel automate NFA
-        let _fsm : FiniteStateMachine = FiniteStateMachine::new(self.get_states().clone(), self.get_alphabet().clone(), _ends);
-        NonDeterministicFiniteAutomaton::new(_starts, _delta, _fsm)
+        let _fsm : FSM = FSM::new(self.get_states().clone(), self.get_alphabet().clone(), _ends);
+        NDFA::new(_starts, _delta, _fsm)
     }
     
     /// Renvoie la version minimize de l'automate 
@@ -157,7 +157,7 @@ impl DeterministicFiniteAutomaton {
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis un lien
-    ///     let mut dfa : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::from_json_file(link_file);  
+    ///     let mut dfa : DFA = DFA::from_json_file(link_file);  
     ///     // minimisation
     ///     dfa = dfa.to_minimize();
     /// }
@@ -165,13 +165,13 @@ impl DeterministicFiniteAutomaton {
     /// 
     /// # Return
     ///
-    /// * `DeterministicFiniteAutomaton` - Le DeterministicFiniteAutomaton apres avoir été minimizé
+    /// * `DFA` - Le DFA apres avoir été minimizé
     /// 
     /// 
-    pub fn to_minimize(&self) -> DeterministicFiniteAutomaton {
+    pub fn to_minimize(&self) -> DFA {
         // min(A) = det(det(At)t)
-        let mut current_dfa : DeterministicFiniteAutomaton = self.clone();
-        let mut current_nfa : NonDeterministicFiniteAutomaton;
+        let mut current_dfa : DFA = self.clone();
+        let mut current_nfa : NDFA;
         // minimalisation
         for _i in 0..2 {
             // realise la transposition
@@ -182,7 +182,7 @@ impl DeterministicFiniteAutomaton {
         current_dfa
     }
 }
-impl AutomateJsonIO for DeterministicFiniteAutomaton{
+impl AutomateJsonIO for DFA{
     /// Créer un automate à état fini détérministe depuis un chemin du json
     /// 
     /// # Arguments
@@ -233,14 +233,14 @@ impl AutomateJsonIO for DeterministicFiniteAutomaton{
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis du json
-    ///     let dfa : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::from_json(&content_json);
+    ///     let dfa : DFA = DFA::from_json(&content_json);
     /// 
     /// }
     /// ```
     /// 
     /// # Return
     ///
-    /// * `DeterministicFiniteAutomaton` - L'automate déterministe à état fini correspondante
+    /// * `DFA` - L'automate déterministe à état fini correspondante
     /// 
     fn from_json(content_json: &Value) -> Self {
         //creation du DFA à l'aide du content_json
@@ -265,7 +265,7 @@ impl AutomateJsonIO for DeterministicFiniteAutomaton{
             // création de la transition: sur l'etat state, la lecture de state par symbol mene à image
             transition = Transition::new(symbol.clone(), state.clone());
             delta.insert(transition, image.clone());
-            // on aurait pus juste construire delta et delaisser l'alphabet et le state à la FiniteStateMachine mais on en profite pour les construires en meme temps
+            // on aurait pus juste construire delta et delaisser l'alphabet et le state à la FSM mais on en profite pour les construires en meme temps
             // ca nous fais economiser du temps et on sait que le contenu de l'alphabet et la liste des states apparait au moin une fois dans delta 
             states.insert(state);
             states.insert(image);
@@ -282,10 +282,10 @@ impl AutomateJsonIO for DeterministicFiniteAutomaton{
             states.insert(state);
         }
         
-        //on aurait pus directement utiliser l'interfasse de FiniteStateMachine pour enumerer les etat, l'alphabet etc. mais par precaution on le fait mannuellement par apport au contenu des transitions
-        //let fsm = FiniteStateMachine::from_json(&content_json);
-        let fsm : FiniteStateMachine = FiniteStateMachine::new(states, alphabet, ends);
-        DeterministicFiniteAutomaton { 
+        //on aurait pus directement utiliser l'interfasse de FSM pour enumerer les etat, l'alphabet etc. mais par precaution on le fait mannuellement par apport au contenu des transitions
+        //let fsm = FSM::from_json(&content_json);
+        let fsm : FSM = FSM::new(states, alphabet, ends);
+        DFA { 
             start: state_init, 
             delta: delta, 
             fsm: fsm
@@ -342,14 +342,14 @@ impl AutomateJsonIO for DeterministicFiniteAutomaton{
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis un lien
-    ///     let dfa : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::from_json_file(link_file);  
+    ///     let dfa : DFA = DFA::from_json_file(link_file);  
     /// 
     /// }
     /// ```
     /// 
     /// # Return
     ///
-    /// * `DeterministicFiniteAutomaton` - L'automate déterministe à état fini correspondante
+    /// * `DFA` - L'automate déterministe à état fini correspondante
     /// 
     fn from_json_file(path: &str) -> Self {
         let content_json: Value = {
@@ -359,11 +359,11 @@ impl AutomateJsonIO for DeterministicFiniteAutomaton{
             from_str::<Value>(&content).unwrap()
         };
         //creation de la machine
-        DeterministicFiniteAutomaton::from_json(&content_json)
+        DFA::from_json(&content_json)
     }
 }
 
-impl AutomateTrait<State> for DeterministicFiniteAutomaton{
+impl AutomateTrait<State> for DFA{
     /// Retourne l'état de départ de l'automate
     fn get_start(&self) -> &State {
         &self.start
@@ -373,7 +373,7 @@ impl AutomateTrait<State> for DeterministicFiniteAutomaton{
         self.get_start()
     }
     /// Retourne la machine de l'automate
-    fn get_fsm(&self) -> &FiniteStateMachine {
+    fn get_fsm(&self) -> &FSM {
         &self.fsm
     }
     
@@ -416,7 +416,7 @@ impl AutomateTrait<State> for DeterministicFiniteAutomaton{
         self.get_ends().contains(state)
     }
     /// renvoie un clone de l'automate actuel puisqu'il est déjà determinist
-    fn to_dfa(&self) -> DeterministicFiniteAutomaton{
+    fn to_dfa(&self) -> DFA{
         self.clone()
     }
 }
@@ -436,12 +436,12 @@ mod test {
             from_str::<Value>(&content).unwrap()
         };
         //creation depuis un lien
-        let mut dfa : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::from_json_file(link_file);  
+        let mut dfa : DFA = DFA::from_json_file(link_file);  
         //creation depuis du json
-        let dfa2 : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::from_json(&content_json);
-        let fsm: FiniteStateMachine = FiniteStateMachine::from_json(&content_json);
+        let dfa2 : DFA = DFA::from_json(&content_json);
+        let fsm: FSM = FSM::from_json(&content_json);
         //creation depuis new
-        let dfa3 : DeterministicFiniteAutomaton = DeterministicFiniteAutomaton::new(dfa.get_start().clone(), dfa.get_delta().clone(), fsm.clone());  
+        let dfa3 : DFA = DFA::new(dfa.get_start().clone(), dfa.get_delta().clone(), fsm.clone());  
 
         assert_eq!(dfa.get_start(), dfa2.get_start());
         assert_eq!(dfa.get_ends(), dfa2.get_ends());
@@ -456,13 +456,13 @@ mod test {
 
         link_file = "src/automates/DFA2.json";
         //creation depuis un lien
-        dfa = DeterministicFiniteAutomaton::from_json_file(link_file);  
+        dfa = DFA::from_json_file(link_file);  
         assert_eq!(dfa.accept("00011"), true);
         assert_eq!(dfa.accept("000"), false);
 
         link_file = "src/automates/DFA3.json";
         //creation depuis un lien
-        dfa = DeterministicFiniteAutomaton::from_json_file(link_file);  
+        dfa = DFA::from_json_file(link_file);  
         assert_eq!(dfa.accept("b"), true);
         assert_eq!(dfa.accept("aaa"), false);
         assert_eq!(dfa.accept("bbababbb"), false);
@@ -470,8 +470,8 @@ mod test {
         // transposition d'un DFA
         link_file = "src/automates/DFA1.json";
         //creation depuis un lien
-        dfa = DeterministicFiniteAutomaton::from_json_file(link_file);  
-        let nfa : NonDeterministicFiniteAutomaton  = dfa.to_transpose();
+        dfa = DFA::from_json_file(link_file);  
+        let nfa : NDFA  = dfa.to_transpose();
         
         let mut transition :Transition<State> = Transition::new(Symbol::new("b".to_string()),State::new("q_0".to_string()));
         let mut bt : BTSet<State> = BTSet::new();

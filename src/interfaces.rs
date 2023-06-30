@@ -1,7 +1,7 @@
 use std::{collections::HashMap, hash::Hash, fmt::Debug};
 
 use serde_json::Value;
-use crate::{FiniteStateMachine, State, Transition, BTSet, Symbol, DeterministicFiniteAutomaton};
+use crate::{FSM, State, Transition, BTSet, Symbol, DFA};
 
 pub trait AutomateJsonIO{
     fn from_json(content_json : &Value) -> Self;
@@ -9,7 +9,7 @@ pub trait AutomateJsonIO{
 }
 
 pub trait AutomateTrait<T : Clone + Hash +Debug>{
-    fn get_fsm(&self) -> &FiniteStateMachine;
+    fn get_fsm(&self) -> &FSM;
     fn get_start(&self) -> &T;
     fn get_starts(&self) -> &T;
     fn get_delta(&self) -> &HashMap<Transition<State>, T>;
@@ -23,5 +23,5 @@ pub trait AutomateTrait<T : Clone + Hash +Debug>{
         self.get_fsm().get_ends()
     }
     fn accept(&self, _word: &str) -> bool;
-    fn to_dfa(&self) -> DeterministicFiniteAutomaton;
+    fn to_dfa(&self) -> DFA;
 }

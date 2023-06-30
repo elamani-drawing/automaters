@@ -1,20 +1,20 @@
-use crate::{DeterministicFiniteAutomaton, AutomateJsonIO, AutomateTrait};
+use crate::{DFA, AutomateJsonIO, AutomateTrait};
 
-use super::{BTSet, FiniteStateMachine, State, Symbol, Transition};
+use super::{BTSet, FSM, State, Symbol, Transition};
 use serde_json::{from_str, Value};
 use std::collections::HashMap;
 use std::fs;
 
 /// Automate a état fini déterministe
 #[derive(Debug, Clone)]
-pub struct NonDeterministicFiniteAutomatonEpsilon {
+pub struct NDFAEpsilon {
     starts: BTSet<State>,
     delta: HashMap<Transition<State>, BTSet<State>>,
-    fsm: FiniteStateMachine,
+    fsm: FSM,
     epsilon: Symbol,
 }
 
-impl NonDeterministicFiniteAutomatonEpsilon {
+impl NDFAEpsilon {
     /// Créer un automate a état fini non déterministe
     ///
     /// # Arguments
@@ -70,27 +70,27 @@ impl NonDeterministicFiniteAutomatonEpsilon {
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis un lien
-    ///     let nfae : NonDeterministicFiniteAutomatonEpsilon = NonDeterministicFiniteAutomatonEpsilon::from_json_file(link_file);  
+    ///     let nfae : NDFAEpsilon = NDFAEpsilon::from_json_file(link_file);  
     ///     //creation depuis du json
-    ///     let nfae2 : NonDeterministicFiniteAutomatonEpsilon = NonDeterministicFiniteAutomatonEpsilon::from_json(&content_json);
-    ///     let fsm: FiniteStateMachine = FiniteStateMachine::from_json(&content_json);
+    ///     let nfae2 : NDFAEpsilon = NDFAEpsilon::from_json(&content_json);
+    ///     let fsm: FSM = FSM::from_json(&content_json);
     ///     //creation depuis new
-    ///     let nfae3 : NonDeterministicFiniteAutomatonEpsilon = NonDeterministicFiniteAutomatonEpsilon::new(nfae.get_starts().clone(), nfae.get_delta().clone(), fsm.clone());  
+    ///     let nfae3 : NDFAEpsilon = NDFAEpsilon::new(nfae.get_starts().clone(), nfae.get_delta().clone(), fsm.clone());  
     ///
     /// }
     /// ```
     ///
     /// # Return
     ///
-    /// * `NonDeterministicFiniteAutomatonEpsilon` - L'automate non déterministe à état fini avec Epsilon transition correspondante
+    /// * `NDFAEpsilon` - L'automate non déterministe à état fini avec Epsilon transition correspondante
     ///
     pub fn new(
         _starts: BTSet<State>,
         _delta: HashMap<Transition<State>, BTSet<State>>,
-        _fsm: FiniteStateMachine,
+        _fsm: FSM,
     ) -> Self {
         let _epsilon = Symbol::new("ε".to_string());
-        NonDeterministicFiniteAutomatonEpsilon {
+        NDFAEpsilon {
             starts: _starts,
             delta: _delta,
             fsm: _fsm,
@@ -194,7 +194,7 @@ impl NonDeterministicFiniteAutomatonEpsilon {
     }
     
 }
-impl AutomateJsonIO for NonDeterministicFiniteAutomatonEpsilon{    
+impl AutomateJsonIO for NDFAEpsilon{    
     /// Créer un automate à état fini non détérministe depuis un chemin du json
     ///   
     /// # Arguments
@@ -255,14 +255,14 @@ impl AutomateJsonIO for NonDeterministicFiniteAutomatonEpsilon{
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis du json
-    ///     let nfae : NonDeterministicFiniteAutomatonEpsilon = NonDeterministicFiniteAutomatonEpsilon::from_json(&content_json);
+    ///     let nfae : NDFAEpsilon = NDFAEpsilon::from_json(&content_json);
     ///
     /// }
     /// ```
     ///
     /// # Return
     ///
-    /// * `NonDeterministicFiniteAutomatonEpsilon` - L'automate non déterministe à état fini avec Epsilon transition correspondante
+    /// * `NDFAEpsilon` - L'automate non déterministe à état fini avec Epsilon transition correspondante
     ///
     fn from_json(content_json: &Value) -> Self {
         //creation du nfae à l'aide du content_json
@@ -312,10 +312,10 @@ impl AutomateJsonIO for NonDeterministicFiniteAutomatonEpsilon{
         }
         // on pourrait utiliser le chargement de l'automate nfae au lieu de retaper tout le code
 
-        //on aurait pus directement utiliser l'interfasse de FiniteStateMachine pour enumerer les etat, l'alphabet etc. mais par precaution on le fait mannuellement par apport au contenu des transitions
-        //let fsm = FiniteStateMachine::from_json(content_json);
-        let fsm: FiniteStateMachine = FiniteStateMachine::new(states, alphabet, ends);
-        NonDeterministicFiniteAutomatonEpsilon::new(starts, delta, fsm)
+        //on aurait pus directement utiliser l'interfasse de FSM pour enumerer les etat, l'alphabet etc. mais par precaution on le fait mannuellement par apport au contenu des transitions
+        //let fsm = FSM::from_json(content_json);
+        let fsm: FSM = FSM::new(states, alphabet, ends);
+        NDFAEpsilon::new(starts, delta, fsm)
     }
 
     /// Créer un automate à état fini détérministe depuis un chemin vers un fichier json
@@ -378,14 +378,14 @@ impl AutomateJsonIO for NonDeterministicFiniteAutomatonEpsilon{
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis un lien
-    ///     let nfae : NonDeterministicFiniteAutomatonEpsilon = NonDeterministicFiniteAutomatonEpsilon::from_json_file(link_file);  
+    ///     let nfae : NDFAEpsilon = NDFAEpsilon::from_json_file(link_file);  
     ///
     /// }
     /// ```
     ///
     /// # Return
     ///
-    /// * `NonDeterministicFiniteAutomatonEpsilon` - L'automate déterministe à état fini correspondante
+    /// * `NDFAEpsilon` - L'automate déterministe à état fini correspondante
     ///
     fn from_json_file(path: &str) -> Self {
         let content_json: Value = {
@@ -395,11 +395,11 @@ impl AutomateJsonIO for NonDeterministicFiniteAutomatonEpsilon{
             from_str::<Value>(&content).unwrap()
         };
         //creation de la machine
-        NonDeterministicFiniteAutomatonEpsilon::from_json(&content_json)
+        NDFAEpsilon::from_json(&content_json)
     }
 }
 
-impl AutomateTrait<BTSet<State>> for NonDeterministicFiniteAutomatonEpsilon{
+impl AutomateTrait<BTSet<State>> for NDFAEpsilon{
     /// Retourne les états de départ de l'automate
     fn get_starts(&self) -> &BTSet<State> {
         &self.starts
@@ -409,7 +409,7 @@ impl AutomateTrait<BTSet<State>> for NonDeterministicFiniteAutomatonEpsilon{
         self.get_starts()
     }
     /// Retourne la machine de l'automate
-    fn get_fsm(&self) -> &FiniteStateMachine {
+    fn get_fsm(&self) -> &FSM {
         &self.fsm
     }
     /// Retourne les transitions de l'automate
@@ -472,16 +472,16 @@ impl AutomateTrait<BTSet<State>> for NonDeterministicFiniteAutomatonEpsilon{
     ///         from_str::<Value>(&content).unwrap()
     ///     };
     ///     //creation depuis un lien
-    ///     let nfa : NonDeterministicFiniteAutomaton = NonDeterministicFiniteAutomaton::from_json_file(link_file);  
+    ///     let nfa : NDFA = NDFA::from_json_file(link_file);  
     ///     dbg!(nfa.to_dfa());
     /// }
     /// ```
     /// 
     /// # Return
     ///
-    /// * `NonDeterministicFiniteAutomaton` - L'automate déterministe à état fini qui correspondante
+    /// * `NDFA` - L'automate déterministe à état fini qui correspondante
     /// 
-    fn to_dfa(&self) -> DeterministicFiniteAutomaton {
+    fn to_dfa(&self) -> DFA {
         // Un set des images que renvoie une transition
         let mut state_image : BTSet<State>;
         let _alphabet :BTSet<Symbol>  = self.get_alphabet().clone();
@@ -572,9 +572,9 @@ impl AutomateTrait<BTSet<State>> for NonDeterministicFiniteAutomatonEpsilon{
                 }
             }
         }
-        let _fsm :FiniteStateMachine = FiniteStateMachine::new(_states, _alphabet, _ends);
+        let _fsm :FSM = FSM::new(_states, _alphabet, _ends);
         // création du DFA
-        DeterministicFiniteAutomaton::new(_concordances.get(&first_state).unwrap().clone(), _deltas, _fsm)
+        DFA::new(_concordances.get(&first_state).unwrap().clone(), _deltas, _fsm)
     }
 }
 
@@ -593,12 +593,12 @@ mod test {
             from_str::<Value>(&content).unwrap()
         };
         //creation depuis un lien
-        let mut nfae: NonDeterministicFiniteAutomatonEpsilon =  NonDeterministicFiniteAutomatonEpsilon::from_json_file(link_file);
+        let mut nfae: NDFAEpsilon =  NDFAEpsilon::from_json_file(link_file);
         //creation depuis du json
-        let nfae2: NonDeterministicFiniteAutomatonEpsilon =  NonDeterministicFiniteAutomatonEpsilon::from_json(&content_json);
-        let fsm: FiniteStateMachine = FiniteStateMachine::from_json(&content_json);
+        let nfae2: NDFAEpsilon =  NDFAEpsilon::from_json(&content_json);
+        let fsm: FSM = FSM::from_json(&content_json);
         //creation depuis new
-        let nfae3: NonDeterministicFiniteAutomatonEpsilon =  NonDeterministicFiniteAutomatonEpsilon::new(
+        let nfae3: NDFAEpsilon =  NDFAEpsilon::new(
             nfae.get_starts().clone(),
             nfae.get_delta().clone(),
             fsm.clone(),
@@ -616,14 +616,14 @@ mod test {
 
         link_file = "src/automates/NFA2e.json";
         //creation depuis un lien
-        nfae = NonDeterministicFiniteAutomatonEpsilon::from_json_file(link_file);
+        nfae = NDFAEpsilon::from_json_file(link_file);
         assert_eq!(nfae.accept(""), false);
         assert_eq!(nfae.accept("0"), false);
         assert_eq!(nfae.accept("01"), false);
 
         link_file = "src/automates/NFA3e.json";
         //creation depuis un lien
-        nfae = NonDeterministicFiniteAutomatonEpsilon::from_json_file(link_file);
+        nfae = NDFAEpsilon::from_json_file(link_file);
         assert_eq!(nfae.accept("01"), true);
         assert_eq!(nfae.accept("0"), true);
     }
