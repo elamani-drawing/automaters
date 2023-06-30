@@ -2,8 +2,13 @@
 name = "automaters"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT"
+description = "Implémentation d'automate en Rust. (FSM, NFA, DFA, NDFAE)"
+repository = "https://github.com/elamani-drawing/automaters"
+documentation = "https://docs.rs/automaters/0.1.0/automaters/"
+homepage = "https://github.com/elamani-drawing/automaters"
+keywords = ["rust", "automate", "machine", "regex", "turing"]
+categories = ["Algorithms", "Parser implementations"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
