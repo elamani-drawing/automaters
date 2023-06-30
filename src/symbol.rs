@@ -19,7 +19,7 @@ impl Symbol {
     /// # Example
     ///
     /// ```
-    /// use automate::Symbol;
+    /// use automaters::Symbol;
     /// fn main() {
     ///     let string_one : String = String::from("symbol");
     ///     let Symbol_one : Symbol = Symbol::new(string_one);
@@ -43,7 +43,7 @@ impl Symbol {
     /// # Example
     ///
     /// ```
-    /// use automate::Symbol;
+    /// use automaters::Symbol;
     /// fn main() {
     ///     let string_one : String = String::from("Symbol");
     ///     let symbol_one : Symbol = Symbol::new(string_one.clone());

@@ -62,7 +62,7 @@ impl NonDeterministicFiniteAutomaton {
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -173,7 +173,7 @@ impl AutomateJsonIO for NonDeterministicFiniteAutomaton{
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -299,7 +299,7 @@ impl AutomateJsonIO for NonDeterministicFiniteAutomaton{
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -397,7 +397,7 @@ impl AutomateTrait<BTSet<State>> for NonDeterministicFiniteAutomaton{
     /// Convertit le NFA en DFA
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {

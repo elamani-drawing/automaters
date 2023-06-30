@@ -51,7 +51,7 @@ impl DeterministicFiniteAutomaton {
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -93,7 +93,7 @@ impl DeterministicFiniteAutomaton {
     /// Réalise la transposition de l'automate
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -145,7 +145,7 @@ impl DeterministicFiniteAutomaton {
     /// Renvoie la version minimize de l'automate 
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -220,7 +220,7 @@ impl AutomateJsonIO for DeterministicFiniteAutomaton{
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -329,7 +329,7 @@ impl AutomateJsonIO for DeterministicFiniteAutomaton{
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {

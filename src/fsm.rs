@@ -36,7 +36,7 @@ impl FiniteStateMachine {
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -90,7 +90,7 @@ impl FiniteStateMachine {
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {
@@ -162,7 +162,7 @@ impl FiniteStateMachine {
     /// Le chargement dans le code
     /// 
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::fs;
     /// use serde_json::{Value, from_str};
     /// fn main() {

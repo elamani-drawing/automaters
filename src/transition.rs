@@ -19,7 +19,7 @@ impl<T: Clone> Transition<T> {
     /// 
     /// Créer une transition avec un set de States
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// use std::collections::HashSet;
     /// fn main() {
     ///     //un set d'etat
@@ -43,7 +43,7 @@ impl<T: Clone> Transition<T> {
     /// 
     /// Créer une transition avec un state
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// fn main() {
     ///     //crée un symbole
     ///     let symbole : Symbol = Symbol::new(String::from("o"));
@@ -70,7 +70,7 @@ impl<T: Clone> Transition<T> {
     /// # Example
     ///
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// fn main() {
     ///     let symbole : Symbol = Symbol::new(String::from("o"));
     ///     //crée des etats
@@ -94,7 +94,7 @@ impl<T: Clone> Transition<T> {
     /// # Example
     ///
     /// ```
-    /// use automate::*;
+    /// use automaters::*;
     /// fn main() {
     ///     let symbole : Symbol = Symbol::new(String::from("o"));
     ///     //crée des etats

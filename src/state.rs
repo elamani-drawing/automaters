@@ -18,7 +18,7 @@ impl State {
     /// # Examples
     ///
     /// ```
-    /// use automate::State;
+    /// use automaters::State;
     /// fn main() {
     ///     let string_one : String = String::from("state one");
     ///     let state_one : State = State::new(string_one);
@@ -42,7 +42,7 @@ impl State {
     /// # Example
     ///
     /// ```
-    /// use automate::State;
+    /// use automaters::State;
     /// fn main() {
     ///     let string_one : String = String::from("state one");
     ///     let state_one : State = State::new(string_one);
